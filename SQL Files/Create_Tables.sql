@@ -1,5 +1,7 @@
-DROP TABLE IF EXISTS Application_P23, Review_P23, Position_P23, StudentMajor_P23, School_P23, Student_P23, Major_P23, Department_P23;
-
+ALTER TABLE Student_P23 DROP CONSTRAINT Major;
+ALTER TABLE Application_P23 DROP CONSTRAINT StudentID;
+ALTER TABLE Application_P23 DROP CONSTRAINT PositionID;
+DROP TABLE IF EXISTS Application_P23, Position_P23, StudentMajor_P23, School_P23, Student_P23, Major_P23, Department_P23;
 
 
 CREATE TABLE Department_P23 (
@@ -7,26 +9,22 @@ CREATE TABLE Department_P23 (
 	DepartmentName varchar(40),
 	StudentNumber int,
 	DepartmentMinimum int,
-	PRIMARY KEY(DepartmentID)
-	
-) Engine = InnoDB;
-
+	PRIMARY KEY(DepartmentID)	
+)
 
 
 CREATE TABLE Major_P23 (
 	MajorID int AUTO_INCREMENT NOT NULL,
 	MajorName varchar(40),
 	PRIMARY KEY(MajorID)
-) Engine = InnoDB;
-
+)
 
 
 CREATE TABLE School_P23 (
 	DepartmentID int NOT NULL,
 	MajorID int NOT NULL,
 	PRIMARY KEY(DepartmentID, MajorID)
-) Engine = InnoDB;
-
+)
 
 
 CREATE TABLE Student_P23 (
@@ -38,11 +36,8 @@ CREATE TABLE Student_P23 (
 	Classification varchar(40),
 	GPA double(3, 2)
 		CHECK (GPA >= 0 and GPA <= 4.0),
-	PRIMARY KEY (StudentID),
-	FOREIGN KEY (MajorID) REFERENCES Major_P23 (MajorID)
-	
-) Engine = InnoDB;
-
+	PRIMARY KEY (StudentID)
+)
 
 	
 CREATE TABLE Position_P23 (
@@ -53,34 +48,26 @@ CREATE TABLE Position_P23 (
 	Deadline date,
 	Compensation int,
 	MinimumGPA decimal(4, 2),
-	Housing boolean
-	
-) Engine = InnoDB;
-
+	Housing boolean	
+)
 
 
 CREATE TABLE Application_P23 (
+	ApplicationNumber int NOT NULL PRIMARY KEY AUTO_INCREMENT,
 	StudentID int,
 	PositionID int,
 	ApplicationDate date,
-	Status varchar(20),
-	FOREIGN KEY (StudentID) REFERENCES Student_P23 (StudentID),
-	FOREIGN KEY (PositionID) REFERENCES Position_P23 (PositionID)
-	
-) Engine = InnoDB;
+	Status varchar(20)
+)
 
 
-CREATE TABLE Review_P23 (
-	StudentID int,
-	PositionID int,
-	Start_of_term varchar(20),
-	End_of_term varchar(20),
-	Rating decimal(2, 1)
-		CHECK (Rating >= 0.0 and Rating <= 5.0),
-	Feedback varchar(200),
-	FOREIGN KEY (StudentID) REFERENCES Student_P23 (StudentID),
-	FOREIGN KEY (PositionID) REFERENCES Position_P23 (PositionID)
-	
-) Engine = InnoDB;
+ALTER TABLE Student_P23 ADD CONSTRAINT Major
+	FOREIGN KEY (MajorID) REFERENCES Major_P23(MajorID) ON DELETE CASCADE;
+
+ALTER TABLE Application_P23 ADD CONSTRAINT StudentID
+	FOREIGN KEY (StudentID) REFERENCES Student_P23(StudentID) ON DELETE CASCADE;
+
+ALTER TABLE Application_P23 ADD CONSTRAINT PositionID
+	FOREIGN KEY (PositionID) REFERENCES Position_P23(PositionID) ON DELETE CASCADE;
 
 	
