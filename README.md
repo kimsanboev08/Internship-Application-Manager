@@ -4,5 +4,6 @@ A streamlined web-based dynamic PHP-based system with an SQL database that effic
 
 **Every change made is reflected on the database respectively.**
 
+https://github.com/kimsanboev08/Internship-Application-Manager/assets/51867935/31631970-5f05-4e34-8389-556d096ade45
 
 
